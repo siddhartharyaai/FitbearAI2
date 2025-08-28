@@ -1,19 +1,19 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { supabaseBrowser } from '@/lib/supabase-client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { supabaseBrowser } from '../lib/supabase-client';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Badge } from '../components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import { Alert, AlertDescription } from '../components/ui/alert';
 import { Loader2, Camera, Utensils, MessageSquare, User, Scan, Activity, Settings, AlertTriangle, Eye, EyeOff, LogOut } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
-import { VoiceButton, CoachSpeaker } from '@/components/VoiceButton';
-import { usePostHog } from '@/lib/hooks/usePostHog';
-import { FullBPSOnboarding } from '@/components/FullBPSOnboarding';
-import { SettingsPage } from '@/components/SettingsPage';
+import { useToast } from '../components/ui/use-toast';
+import { VoiceButton, CoachSpeaker } from '../components/VoiceButton';
+import { usePostHog } from '../lib/hooks/usePostHog';
+import { FullBPSOnboarding } from '../components/FullBPSOnboarding';
+import { SettingsPage } from '../components/SettingsPage';
 import { useRouter } from 'next/navigation';
 
 // Email/Password Auth (NO OTP/Magic Link)
