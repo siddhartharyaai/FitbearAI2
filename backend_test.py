@@ -12,8 +12,8 @@ from io import BytesIO
 from PIL import Image
 import os
 
-# Use local environment with real Supabase credentials
-BASE_URL = "https://fitbear-ai.preview.emergentagent.com/api"
+# Use local environment for testing
+BASE_URL = "http://localhost:3000/api"
 
 def create_test_image():
     """Create a small test image for upload testing"""
