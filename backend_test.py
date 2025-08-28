@@ -17,9 +17,12 @@ import base64
 from io import BytesIO
 import os
 
-# Get base URL from environment
-BASE_URL = os.getenv('NEXT_PUBLIC_BASE_URL', 'https://fitbear-ai.preview.emergentagent.com')
-API_BASE = f"{BASE_URL}/api"
+# Test both local and external URLs
+EXTERNAL_URL = os.getenv('NEXT_PUBLIC_BASE_URL', 'https://fitbear-ai.preview.emergentagent.com')
+LOCAL_URL = 'http://localhost:3000'
+
+# Start with local testing
+API_BASE = f"{LOCAL_URL}/api"
 
 print(f"🎯 FINAL VALIDATION - ALL SYSTEMS GO CHECK")
 print(f"Testing backend at: {API_BASE}")
