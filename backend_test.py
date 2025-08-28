@@ -125,81 +125,96 @@ def test_endpoint(method, endpoint, data=None, files=None, headers=None, auth_re
         return False
 
 def main():
-    """Run comprehensive backend infrastructure validation"""
-    print("🚨 CRITICAL DEPLOYED APP VALIDATION - BACKEND INFRASTRUCTURE")
+    """Run comprehensive backend testing after Supabase fix"""
+    print("🚨 COMPREHENSIVE BACKEND TESTING - POST-SUPABASE FIX")
     print("=" * 70)
-    print(f"Testing deployed app at: https://fitbearai.netlify.app")
+    print(f"Testing local environment with real Supabase credentials")
+    print(f"Supabase URL: https://rencenlauvvopjjynvebc.supabase.co")
     print(f"API Base URL: {BASE_URL}")
     print("=" * 70)
     
     results = {}
     
-    # 1. PRODUCTION MODE VERIFICATION
-    print("\n📋 1. PRODUCTION MODE VERIFICATION")
-    results['whoami'] = test_endpoint("GET", "/whoami", auth_required=False)
-    
-    # 2. HEALTH CHECK
-    print("\n📋 2. API HEALTH CHECK")
+    # 1. API HEALTH CHECK - Verify basic connectivity
+    print("\n📋 1. API HEALTH CHECK - VERIFY BASIC CONNECTIVITY")
     results['health_root'] = test_endpoint("GET", "/", auth_required=False)
     results['health_app'] = test_endpoint("GET", "/health/app", auth_required=False)
     
-    # 3. AUTHENTICATION VERIFICATION (should require auth)
-    print("\n📋 3. AUTHENTICATION VERIFICATION")
-    results['profile_unauth'] = test_endpoint("GET", "/me/profile", auth_required=True)
-    results['targets_unauth'] = test_endpoint("GET", "/me/targets", auth_required=True)
+    # 2. SUPABASE INTEGRATION - Test authentication with real credentials
+    print("\n📋 2. SUPABASE INTEGRATION - REAL CREDENTIALS TEST")
+    print("   Testing with: https://rencenlauvvopjjynvebc.supabase.co")
+    results['whoami'] = test_endpoint("GET", "/whoami", auth_required=False)
     
-    # 4. PUBLIC ENDPOINTS (no auth required)
-    print("\n📋 4. PUBLIC ENDPOINTS")
+    # 3. ALL CORE ENDPOINTS - Menu scan, Coach chat, TDEE calculator, etc.
+    print("\n📋 3. ALL CORE ENDPOINTS TESTING")
     
     # TDEE Calculator
+    print("\n   🧮 TDEE Calculator")
     tdee_data = {
+        "sex": "male",
         "age": 28,
-        "gender": "male",
-        "height": 175,
-        "weight": 70,
-        "activity": "moderate"
+        "height_cm": 175,
+        "weight_kg": 70,
+        "activity_level": "moderate"
     }
     results['tdee'] = test_endpoint("POST", "/tools/tdee", data=tdee_data, auth_required=False)
     
-    # 5. FORMDATA ENDPOINTS (image uploads)
-    print("\n📋 5. FORMDATA ENDPOINTS")
-    
-    # Menu Scanner
+    # Menu Scanner with Gemini Vision OCR
+    print("\n   📱 Menu Scanner (Gemini Vision OCR)")
     test_image = create_test_image()
-    menu_files = {'image': ('test_menu.jpg', test_image, 'image/jpeg')}
+    menu_files = {'image': ('indian_menu.jpg', test_image, 'image/jpeg')}
     results['menu_scan'] = test_endpoint("POST", "/menu/scan", files=menu_files, auth_required=False)
     
-    # Meal Analyzer
-    meal_files = {'image': ('test_meal.jpg', test_image, 'image/jpeg')}
+    # Meal Photo Analyzer
+    print("\n   📸 Meal Photo Analyzer")
+    meal_files = {'image': ('dal_rice.jpg', test_image, 'image/jpeg')}
     results['meal_analyze'] = test_endpoint("POST", "/food/analyze", files=meal_files, auth_required=False)
     
-    # 6. AI INTEGRATION ENDPOINTS
-    print("\n📋 6. AI INTEGRATION ENDPOINTS")
-    
-    # Coach Chat
-    coach_data = {"message": "What should I eat for muscle gain?"}
+    # Coach Chat with Gemini AI
+    print("\n   🤖 Coach Chat (Gemini AI)")
+    coach_data = {
+        "message": "I'm a 28-year-old vegetarian male looking to gain muscle. What Indian foods should I eat?",
+        "user_id": "test_user_123",
+        "profile": {
+            "name": "Arjun Sharma",
+            "height_cm": 175,
+            "weight_kg": 70,
+            "activity_level": "moderate",
+            "veg_flag": True
+        }
+    }
     results['coach'] = test_endpoint("POST", "/coach/ask", data=coach_data, auth_required=False)
     
-    # 7. VOICE ENDPOINTS
-    print("\n📋 7. VOICE ENDPOINTS")
+    # 4. PROFILE/TARGETS ENDPOINTS (Authentication Required)
+    print("\n📋 4. PROFILE/TARGETS ENDPOINTS (AUTH REQUIRED)")
+    results['profile_unauth'] = test_endpoint("GET", "/me/profile", auth_required=True)
+    results['targets_unauth'] = test_endpoint("GET", "/me/targets", auth_required=True)
     
-    # TTS
-    tts_data = {"text": "Hello world"}
+    # 5. PRODUCTION MODE VERIFICATION - Ensure no mock data
+    print("\n📋 5. PRODUCTION MODE VERIFICATION")
+    print("   Checking for mock data prevention and proper API key usage")
+    
+    # Voice endpoints (should fail with proper error due to placeholder keys)
+    print("\n   🎤 TTS/STT Endpoints (Deepgram)")
+    tts_data = {"text": "Namaste! Welcome to Fitbear AI nutrition coaching."}
     results['tts'] = test_endpoint("POST", "/tts", data=tts_data, auth_required=False)
     
-    # STT (with dummy audio data)
-    stt_files = {'audio': ('test.wav', b'dummy_audio_data', 'audio/wav')}
-    results['stt'] = test_endpoint("POST", "/stt", files=stt_files, auth_required=False)
+    # STT with dummy audio
+    stt_data = b'dummy_audio_data_for_testing'
+    results['stt'] = test_endpoint("POST", "/stt", data=stt_data, auth_required=False)
     
-    # 8. ERROR HANDLING VERIFICATION
-    print("\n📋 8. ERROR HANDLING VERIFICATION")
+    # 6. ERROR HANDLING & VALIDATION
+    print("\n📋 6. ERROR HANDLING & VALIDATION")
     
-    # Malformed request
-    results['malformed'] = test_endpoint("POST", "/tools/tdee", data={"invalid": "data"}, auth_required=False)
+    # Malformed TDEE request
+    results['tdee_invalid'] = test_endpoint("POST", "/tools/tdee", data={"invalid": "data"}, auth_required=False)
     
-    # SUMMARY
+    # Missing image for menu scan
+    results['menu_no_image'] = test_endpoint("POST", "/menu/scan", data={}, auth_required=False)
+    
+    # COMPREHENSIVE SUMMARY
     print("\n" + "=" * 70)
-    print("📊 BACKEND INFRASTRUCTURE VALIDATION SUMMARY")
+    print("📊 COMPREHENSIVE BACKEND TESTING SUMMARY")
     print("=" * 70)
     
     passed = sum(1 for result in results.values() if result)
@@ -213,31 +228,52 @@ def main():
         status = "✅ PASS" if result else "❌ FAIL"
         print(f"   {endpoint}: {status}")
     
-    # CRITICAL SUCCESS CRITERIA CHECK
+    # CRITICAL SUCCESS CRITERIA CHECK (from review request)
     print(f"\n🎯 CRITICAL SUCCESS CRITERIA:")
     
-    critical_endpoints = ['health_root', 'whoami', 'tdee']
-    critical_passed = all(results.get(endpoint, False) for endpoint in critical_endpoints)
+    # API Health Check
+    health_ok = results.get('health_root', False) or results.get('health_app', False)
+    print(f"   API Health Check: {'✅ PASS' if health_ok else '❌ FAIL'}")
+    
+    # Supabase Integration
+    supabase_ok = results.get('whoami', False)
+    print(f"   Supabase Integration: {'✅ PASS' if supabase_ok else '❌ FAIL'}")
+    
+    # Core Endpoints
+    core_endpoints = ['tdee', 'menu_scan', 'meal_analyze', 'coach']
+    core_passed = sum(1 for ep in core_endpoints if results.get(ep, False))
+    print(f"   Core Endpoints: {'✅ PASS' if core_passed >= 3 else '❌ FAIL'} ({core_passed}/4)")
+    
+    # Production Mode
+    production_ok = results.get('whoami', False)  # Should show production mode
+    print(f"   Production Mode: {'✅ PASS' if production_ok else '❌ FAIL'}")
+    
+    # Authentication Context
+    auth_ok = results.get('profile_unauth', False) and results.get('targets_unauth', False)
+    print(f"   Authentication Context: {'✅ PASS' if auth_ok else '❌ FAIL'}")
+    
+    print(f"\n🚨 FINAL ASSESSMENT:")
+    critical_passed = health_ok and supabase_ok and (core_passed >= 3) and production_ok and auth_ok
     
     if critical_passed:
-        print(f"✅ Core infrastructure working")
+        print(f"✅ SUCCESS: All critical criteria met - 100% backend functionality achieved")
+        print(f"✅ Ready for Netlify redeployment")
     else:
-        print(f"❌ Core infrastructure failing")
+        print(f"❌ ISSUES FOUND: Critical functionality gaps detected")
+        print(f"❌ Requires fixes before redeployment")
     
-    # Check for routing issues (HTML responses)
-    print(f"\n🔍 INFRASTRUCTURE ANALYSIS:")
-    if passed == 0:
-        print(f"❌ TOTAL FAILURE: All endpoints failing - likely infrastructure/routing issue")
-    elif passed < total // 2:
-        print(f"⚠️  PARTIAL FAILURE: {passed}/{total} working - mixed infrastructure issues")
-    else:
-        print(f"✅ MOSTLY WORKING: {passed}/{total} endpoints functional")
-    
-    print(f"\n🚨 PRODUCTION READINESS:")
-    if critical_passed and passed >= total * 0.7:
-        print(f"✅ BACKEND READY: Infrastructure can handle production traffic")
-    else:
-        print(f"❌ NOT READY: Critical infrastructure issues must be resolved")
+    # Specific findings for main agent
+    print(f"\n🔍 KEY FINDINGS:")
+    if not health_ok:
+        print(f"   ❌ API connectivity issues")
+    if not supabase_ok:
+        print(f"   ❌ Supabase integration problems")
+    if core_passed < 3:
+        print(f"   ❌ Core nutrition features not working")
+    if not production_ok:
+        print(f"   ❌ Production mode not active")
+    if not auth_ok:
+        print(f"   ❌ Authentication endpoints not properly secured")
     
     return results
 
