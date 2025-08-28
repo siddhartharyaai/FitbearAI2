@@ -25,7 +25,8 @@ LOCAL_URL = 'http://localhost:3000'
 API_BASE = f"{LOCAL_URL}/api"
 
 print(f"🎯 FINAL VALIDATION - ALL SYSTEMS GO CHECK")
-print(f"Testing backend at: {API_BASE}")
+print(f"Testing backend locally at: {API_BASE}")
+print(f"External URL: {EXTERNAL_URL}")
 print(f"Environment: {os.getenv('APP_MODE', 'unknown')}")
 print("=" * 80)
 
