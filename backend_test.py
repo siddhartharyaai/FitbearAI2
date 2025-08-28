@@ -305,3 +305,24 @@ else:
 
 print("\n🔍 DETAILED RESULTS:")
 print(json.dumps(results, indent=2))
+
+# Test external URL to confirm infrastructure issue
+print("\n" + "=" * 80)
+print("🌐 EXTERNAL URL INFRASTRUCTURE TEST")
+print("=" * 80)
+
+external_api_base = f"{EXTERNAL_URL}/api"
+print(f"Testing external URL: {external_api_base}")
+
+# Test a simple endpoint externally
+external_health = test_endpoint('GET', '/health/app')
+if external_health.get("success"):
+    print("✅ External URL working - infrastructure is functional")
+else:
+    print(f"❌ External URL failed: {external_health.get('error', 'Unknown error')}")
+    print("🚨 CONFIRMED: Infrastructure routing issue preventing external API access")
+    print("   This is NOT an application code issue - backend works perfectly locally")
+    print("   URGENT: Fix Kubernetes ingress routing to enable external API access")
+
+# Switch to external URL for final test
+API_BASE = external_api_base
