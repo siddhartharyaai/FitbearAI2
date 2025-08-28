@@ -16,9 +16,25 @@ import time
 import base64
 from io import BytesIO
 import os
+import subprocess
+
+# Load environment variables from .env file
+def load_env():
+    try:
+        result = subprocess.run(['cat', '/app/.env'], capture_output=True, text=True)
+        env_vars = {}
+        for line in result.stdout.strip().split('\n'):
+            if '=' in line and not line.startswith('#'):
+                key, value = line.split('=', 1)
+                env_vars[key] = value
+        return env_vars
+    except:
+        return {}
+
+env_vars = load_env()
 
 # Test both local and external URLs
-EXTERNAL_URL = os.getenv('NEXT_PUBLIC_BASE_URL', 'https://fitbear-ai.preview.emergentagent.com')
+EXTERNAL_URL = env_vars.get('NEXT_PUBLIC_BASE_URL', 'https://fitbear-ai.preview.emergentagent.com')
 LOCAL_URL = 'http://localhost:3000'
 
 # Start with local testing
