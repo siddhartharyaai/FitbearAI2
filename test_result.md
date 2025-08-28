@@ -453,14 +453,17 @@ test_plan:
   - task: "Netlify Deployed App - Profile Completion Error"
     implemented: true
     working: false
-    file: "/app/components/FullBPSOnboarding.jsx"
-    stuck_count: 1
+    file: "/app/lib/supabase-client.js"
+    stuck_count: 2
     priority: "critical"
     needs_retesting: true
     status_history:
       - working: false
         agent: "user"
         comment: "CRITICAL BUG FOUND IN DEPLOYED APP: User manually tested the deployed Netlify app (https://fitbearai.netlify.app) and encountered an error when clicking 'Complete Profile' button during profile completion/onboarding. Error screenshots provided. This is a production-blocking issue that needs immediate investigation and resolution."
+      - working: false
+        agent: "testing"
+        comment: "🚨 CRITICAL PRODUCTION FAILURE IDENTIFIED: Comprehensive testing reveals the deployed app at https://fitbearai.netlify.app/ is completely broken with 'Application error: a client-side exception has occurred'. ROOT CAUSE: TypeError: (0 , i.supabaseBrowser) is not a function. The deployed version has incorrect Supabase client exports - /app/lib/supabase-client.js exports 'supabase' but code imports 'supabaseBrowser'. IMPACT: Zero functionality - users cannot even reach authentication form. SOLUTION IMPLEMENTED: Fixed supabase-client.js to export supabaseBrowser() function with proper configuration. STATUS: Fix applied locally but REQUIRES REDEPLOYMENT to Netlify. The deployed version is still using old broken code. This is a deployment/build issue, not application logic issue."
 
 agent_communication:
   - agent: "main"
