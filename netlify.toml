@@ -1,6 +1,5 @@
-# Netlify Configuration for Next.js App
 [build]
-  command = "npm install && npm run build"
+  command = "npm run build"
   publish = ".next"
 
 [build.environment]
@@ -8,22 +7,3 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-[functions]
-  node_bundler = "esbuild"
-  external_node_modules = [
-    "@google/generative-ai",
-    "@deepgram/sdk",
-    "mongodb",
-    "@supabase/supabase-js",
-    "@supabase/ssr",
-    "sharp",
-    "tesseract.js"
-  ]
-  included_files = ["public/test-assets/**"]
-
-# Redirects and headers
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
