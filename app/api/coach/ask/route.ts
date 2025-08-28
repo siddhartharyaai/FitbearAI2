@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     // Require authentication for coach interactions
     const user = await requireUser(req);
