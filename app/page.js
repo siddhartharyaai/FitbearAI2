@@ -104,9 +104,14 @@ export default function App() {
         if (session?.user) {
           setUser(session.user);
           await loadUserData(session.user);
+        } else {
+          // No authenticated user - stay on auth page
+          setStep('auth');
         }
       } catch (error) {
         console.error('Session initialization error:', error);
+        // On error, go to auth page
+        setStep('auth');
       } finally {
         setLoading(false);
       }
