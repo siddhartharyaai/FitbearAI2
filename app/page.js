@@ -594,10 +594,19 @@ export default function FitbearApp() {
         onComplete={async (profileData, targetData) => {
           setLoading(true);
           try {
+            // Get the current session token
+            const { data: sessionData } = await supabaseClient.auth.getSession();
+            const token = sessionData.session?.access_token;
+            
+            const headers = {
+              'Content-Type': 'application/json',
+              ...(token ? { Authorization: `Bearer ${token}` } : {})
+            };
+
             // Save profile
             const profileResponse = await fetch('/api/me/profile', {
               method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
+              headers,
               body: JSON.stringify({ user_id: user.id, ...profileData })
             });
 
@@ -609,7 +618,7 @@ export default function FitbearApp() {
             // Save targets
             const targetResponse = await fetch('/api/me/targets', {
               method: 'PUT', 
-              headers: { 'Content-Type': 'application/json' },
+              headers,
               body: JSON.stringify({ user_id: user.id, ...targetData })
             });
 
