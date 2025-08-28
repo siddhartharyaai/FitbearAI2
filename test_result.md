@@ -452,10 +452,10 @@ test_plan:
   - task: "Netlify Deployed App - Profile Completion Error"
     implemented: true
     working: false
-    file: "/app/lib/supabase-client.js"
+    file: "/app/lib/supabase-client.ts"
     stuck_count: 3
     priority: "critical"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: false
         agent: "user"
