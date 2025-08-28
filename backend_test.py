@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 """
-🚨 COMPREHENSIVE BACKEND TESTING - POST-SUPABASE FIX
-Testing local environment with real Supabase credentials after critical fixes
+🎯 FINAL VALIDATION - ALL SYSTEMS GO CHECK
+Comprehensive backend testing for Fitbear AI before Netlify redeployment
+
+Testing Priority:
+1. Supabase Authentication - Verify real credentials working
+2. Gemini AI Integration - Test Coach Chat and Menu Scanner with updated API key  
+3. Core Backend APIs - Health check, TDEE, Profile/Targets
+4. Production Readiness - No mocks, proper error handling
 """
 
 import requests
@@ -12,8 +18,14 @@ from io import BytesIO
 from PIL import Image
 import os
 
-# Use local environment for testing
-BASE_URL = "http://localhost:3000/api"
+# Get base URL from environment
+BASE_URL = os.getenv('NEXT_PUBLIC_BASE_URL', 'https://fitbear-ai.preview.emergentagent.com')
+API_BASE = f"{BASE_URL}/api"
+
+print(f"🎯 FINAL VALIDATION - ALL SYSTEMS GO CHECK")
+print(f"Testing backend at: {API_BASE}")
+print(f"Environment: {os.getenv('APP_MODE', 'unknown')}")
+print("=" * 80)
 
 def create_test_image():
     """Create a small test image for upload testing"""
