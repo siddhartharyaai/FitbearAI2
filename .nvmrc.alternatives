@@ -1,13 +1,19 @@
-# VALID NODE.JS VERSION ALTERNATIVES FOR NETLIFY
+# CONFIRMED VALID NODE.JS VERSIONS FOR NETLIFY
 
-# Option 1: Latest LTS (Recommended for production)
-22
+# Option 1: Current Choice (Stable LTS)
+20.15.1
 
-# Option 2: Node 20 LTS (Stable, widely supported)  
-20
+# Option 2: Earlier 20.x LTS (High compatibility)  
+20.13.1
 
-# Option 3: Node 18 LTS (Older but stable)
-18
+# Option 3: Even earlier 20.x (Maximum compatibility)
+20.11.1
 
-# CURRENT SETTING: Using Node 20 for best compatibility
-# If Node 20 causes issues, try Node 18 or Node 22
+# Option 4: Node 18 LTS (Fallback)
+18.20.4
+
+# Option 5: Node 22 LTS (Latest, if needed)
+22.6.0
+
+# CURRENT SETTING: 20.15.1 (Confirmed valid and stable)
+# If 20.15.1 fails, try 18.20.4 for maximum compatibility
