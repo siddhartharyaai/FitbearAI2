@@ -1,0 +1,12 @@
+# MINIMAL NETLIFY CONFIGURATION (Fallback)
+# Use this if main netlify.toml causes issues
+
+[build]
+  command = "npm install && npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20.18.0"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
