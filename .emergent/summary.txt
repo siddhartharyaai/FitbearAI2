@@ -1,0 +1,101 @@
+<analysis>
+The previous AI engineer undertook a comprehensive mission to transform the Fitbear AI application into a production-ready system. Initially, the engineer addressed a Netlify build failure related to a missing Supabase client and a series of functional issues, including demo mode behavior, image uploads, and voice integration. However, early self-reporting of success was invalidated by the user, leading to a critical self-correction. The engineer then received a highly detailed Production Cutover mission, focusing on switching to email/password authentication, eliminating all mock data, integrating real Deepgram voice and Gemini OCR, and hardening Netlify deployment. The engineer systematically implemented these changes, created new routes (, , ), updated existing ones, refined environment variable handling, and set up a CI workflow. The process involved fixing import paths (e.g.,  to ), installing dependencies, and performing local smoke tests. The most recent interaction involved the user reporting an inability to save to GitHub, which led the engineer to diagnose and clean up large  and  directories by creating a  file.
+</analysis>
+
+<product_requirements>
+The Fitbear AI is an Indian-first, web-first PWA designed for Indian consumers with mixed diets and intermittent connectivity, aiming to be a free-first health/fitness/nutrition assistant. Key features include an empathetic, personalized Coach C (chat + voice) supporting English/Hinglish, a Menu Scanner using OCR, a Meal Photo Analyzer, a comprehensive 5-step Onboarding (BPS), personalized daily Targets (TDEE, macros, hydration, steps), Logs/History with evening check-ins, and user Settings. The M0 success criteria demand an end-to-end happy path (onboard → targets → scan menu → picks → log → coach reply → history), fast performance, robust data safety (RLS, server-side secrets, no PII), and accessibility. The product requires a production deployment with real data, real OCR/LLM, Deepgram voice, profile CRUD, and no demo data.
+</product_requirements>
+
+<key_technical_concepts>
+- **Next.js (PWA)**: Full-stack framework for the application.
+- **Supabase**: Authentication (Email/Password), with planned database migration.
+- **MongoDB Atlas**: Primary database for application data (profiles, targets, logs).
+- **Gemini Flash (LLM)**: AI for Coach C, Menu Scanner, Meal Photo Analyzer Vision OCR.
+- **Deepgram STT/TTS**: For voice interactions.
+- **PostHog**: Analytics and feature flags.
+- **shadcn/ui & Tailwind CSS**: UI components and styling.
+- **Netlify**: Deployment platform, including Next.js functions and Node 20 runtime.
+</key_technical_concepts>
+
+<code_architecture>
+
+
+-   ****:
+    -   **Summary**: The primary catch-all API route.
+    -   **Changes**: Heavily refactored to remove all hardcoded demo/mock data (dal tadka, paneer, thali fallbacks). Specific endpoints like , ,  were extracted into their own files.
+-   ****:
+    -   **Summary**: New route for Supabase authentication callbacks.
+    -   **Changes**: Created to handle the exchange of  for a user session after Supabase redirects, then redirects to the home page. Uses  for cookie management.
+-   ****:
+    -   **Summary**: Dedicated API endpoint for Coach C interactions.
+    -   **Changes**: Extracted from the  route. Configured to use Gemini 2.5 Flash for responses, exports , .
+-   ** & **:
+    -   **Summary**: Dedicated API endpoints for meal photo analysis and menu scanning.
+    -   **Changes**: Extracted from . Enforce  for image uploads, return 400 JSON on missing files, use  for production guards, and call Gemini Vision 2.5 Flash for actual image processing. Both export , .
+-   ** & **:
+    -   **Summary**: Dedicated API endpoints for Deepgram Text-to-Speech and Speech-to-Text.
+    -   **Changes**: Refined to match exact Deepgram API specifications, returning  for TTS and  for STT. Both export , .
+-   ****:
+    -   **Summary**: New debug API endpoint to check user authentication status and app mode.
+    -   **Changes**: Created to return , essential for verifying production readiness. Exports , .
+-   ****:
+    -   **Summary**: The main frontend entry point.
+    -   **Changes**: Updated to switch from OTP/magic link authentication to email/password, integrate  for client-side auth, add a Profile link and a Sign out button in the header navigation, and use Bearer tokens for API calls.
+-   ****:
+    -   **Summary**: Dedicated page for user profile view and edit.
+    -   **Changes**: Fully implemented for CRUD operations on BPS fields, fetches from , and saves via  request with Bearer token authentication.
+-   ****:
+    -   **Summary**: Server-side authentication utility.
+    -   **Changes**: Updated to include  that attempts to verify a user via a Bearer token or existing cookie session, guarding write APIs.
+-   ****:
+    -   **Summary**: Manages application mode and mock behavior.
+    -   **Changes**: Updated with refined , ,  logic, and  to explicitly block mock paths in production. File extension changed from  to  due to build issues.
+-   ****:
+    -   **Summary**: Client-side Supabase instance creation.
+    -   **Changes**: Created to provide  function that initializes the Supabase client with persistent session and auto-refresh, centralizing client-side Supabase access.
+-   ****:
+    -   **Summary**: Client-side Deepgram voice utilities.
+    -   **Changes**: Implemented , , and  functions for real Deepgram voice integration, replacing Web Speech in production.
+-   ****:
+    -   **Summary**: Directory for test image fixtures.
+    -   **Changes**: Created, including  and  for API and E2E testing.
+-   ****:
+    -   **Summary**: GitHub Actions workflow for Continuous Integration.
+    -   **Changes**: Created to include , 
+> nextjs-mongo-template@0.1.0 build
+> next build, Playwright setup, and  checks for API code.
+-   ****:
+    -   **Summary**: Specifies intentionally untracked files for Git.
+    -   **Changes**: Newly created to exclude , , and other build artifacts, addressing issues with repository size and  failures.
+-   ****:
+    -   **Summary**: Configuration for Netlify deployment.
+    -   **Changes**: Updated to specify 
+> nextjs-mongo-template@0.1.0 build
+> next build command,  publish directory, Node 20 runtime,  plugin, and external Node modules for Netlify Functions.
+</code_architecture>
+
+<pending_tasks>
+- Complete and run Playwright E2E tests as specified in the Production Cutover mission.
+- Verify the CI gate (no-mock grep) and Playwright artifacts.
+- Push the  branch to GitHub.
+- Create a Pull Request (PR) with the specified title and content (Env matrix, curl outputs, screenshots, function logs).
+- Deploy to Netlify with the provided environment variables and verify the Deploy Preview.
+- Update  and  with final details and a demo video.
+</pending_tasks>
+
+<current_work>
+Immediately prior to this summary, the AI engineer had completed a comprehensive Production Cutover mission. This involved:
+- Switching Supabase authentication from OTP/magic link to email/password in  and .
+- Implementing server-side authentication with Bearer token support in  for API protection.
+- Eliminating all hardcoded demo/mock data from  and dedicated routes.
+- Hardening API routes (, , , , ) to enforce FormData, production guards ( in ), and Node.js runtime flags.
+- Adding a Profile link and Sign out button to the main UI.
+- Setting up a CI workflow () and test fixtures ().
+- Verifying local smoke tests that confirmed production mode (), health checks, and production guards for API endpoints.
+
+The work was temporarily paused when the user reported being unable to save to GitHub. The engineer diagnosed this as a repository size issue due to untracked  and  directories. The current work involved creating a  file and executing  to clean up these files from Git tracking. The next step was to verify the repository size and attempt to commit the clean-up changes.
+</current_work>
+
+<optional_next_step>
+Verify repository size and commit remaining changes, then attempt to push the  branch to GitHub.
+</optional_next_step>
