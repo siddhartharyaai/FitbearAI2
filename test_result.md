@@ -454,9 +454,9 @@ test_plan:
     implemented: true
     working: false
     file: "/app/lib/supabase-client.js"
-    stuck_count: 2
+    stuck_count: 3
     priority: "critical"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
       - working: false
         agent: "user"
@@ -464,6 +464,21 @@ test_plan:
       - working: false
         agent: "testing"
         comment: "🚨 CRITICAL PRODUCTION FAILURE IDENTIFIED: Comprehensive testing reveals the deployed app at https://fitbearai.netlify.app/ is completely broken with 'Application error: a client-side exception has occurred'. ROOT CAUSE: TypeError: (0 , i.supabaseBrowser) is not a function. The deployed version has incorrect Supabase client exports - /app/lib/supabase-client.js exports 'supabase' but code imports 'supabaseBrowser'. IMPACT: Zero functionality - users cannot even reach authentication form. SOLUTION IMPLEMENTED: Fixed supabase-client.js to export supabaseBrowser() function with proper configuration. STATUS: Fix applied locally but REQUIRES REDEPLOYMENT to Netlify. The deployed version is still using old broken code. This is a deployment/build issue, not application logic issue."
+      - working: false
+        agent: "testing"
+        comment: "🚨 TOTAL BACKEND INFRASTRUCTURE FAILURE CONFIRMED: Comprehensive testing of deployed app backend at https://fitbearai.netlify.app/api/* reveals COMPLETE API INFRASTRUCTURE COLLAPSE. CRITICAL FINDINGS: 1) ALL 12 API endpoints return 404 Not Found with HTML responses instead of JSON, 2) No API routes are deployed to Netlify Functions - complete backend missing, 3) All endpoints (/whoami, /health/app, /me/profile, /tools/tdee, /menu/scan, /food/analyze, /coach/ask, /tts, /stt) non-functional, 4) HTML 404 pages indicate routing/deployment failure, not application code issues. ROOT CAUSE: Backend API routes not properly configured for Netlify Functions deployment. IMPACT: Even if frontend Supabase issue is fixed, backend APIs are completely inaccessible. URGENT ACTION REQUIRED: 1) Configure Netlify Functions for Next.js API routes, 2) Ensure /app/api/[[...path]]/route.js is deployed as serverless function, 3) Verify environment variables are configured on Netlify, 4) Test API deployment separately from frontend. This is a critical infrastructure deployment issue preventing all backend functionality."
+
+  - task: "Critical Backend Infrastructure Deployment"
+    implemented: false
+    working: false
+    file: "/app/app/api/[[...path]]/route.js"
+    stuck_count: 0
+    priority: "critical"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "testing"
+        comment: "🚨 BACKEND DEPLOYMENT FAILURE: Testing reveals NO backend API routes are deployed to Netlify. All /api/* endpoints return 404 HTML pages. The Next.js API routes in /app/api/[[...path]]/route.js are not being deployed as Netlify Functions. This requires immediate infrastructure configuration to deploy backend APIs as serverless functions on Netlify platform."
 
 agent_communication:
   - agent: "main"
