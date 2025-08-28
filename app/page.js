@@ -38,8 +38,8 @@ async function handleSignUp(email, password) {
 }
 
 async function handleSignIn(email, password) {
-  const supabase = supabaseBrowser();
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const supabaseClient = supabase;
+  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
   if (error) throw error;
   return data.user;
 }
