@@ -466,6 +466,9 @@ test_plan:
       - working: false
         agent: "testing"
         comment: "🚨 TOTAL BACKEND INFRASTRUCTURE FAILURE CONFIRMED: Comprehensive testing of deployed app backend at https://fitbearai.netlify.app/api/* reveals COMPLETE API INFRASTRUCTURE COLLAPSE. CRITICAL FINDINGS: 1) ALL 12 API endpoints return 404 Not Found with HTML responses instead of JSON, 2) No API routes are deployed to Netlify Functions - complete backend missing, 3) All endpoints (/whoami, /health/app, /me/profile, /tools/tdee, /menu/scan, /food/analyze, /coach/ask, /tts, /stt) non-functional, 4) HTML 404 pages indicate routing/deployment failure, not application code issues. ROOT CAUSE: Backend API routes not properly configured for Netlify Functions deployment. IMPACT: Even if frontend Supabase issue is fixed, backend APIs are completely inaccessible. URGENT ACTION REQUIRED: 1) Configure Netlify Functions for Next.js API routes, 2) Ensure /app/api/[[...path]]/route.js is deployed as serverless function, 3) Verify environment variables are configured on Netlify, 4) Test API deployment separately from frontend. This is a critical infrastructure deployment issue preventing all backend functionality."
+      - working: false
+        agent: "main"
+        comment: "🔧 SUPABASE CREDENTIALS UPDATED + NETLIFY FIXES APPLIED: User provided real Supabase credentials (https://rencenlauvvopjjynvebc.supabase.co) replacing placeholder URLs. Fixed Netlify deployment configuration: removed Docker-specific 'output: standalone', updated netlify.toml for proper Next.js 14 + @netlify/plugin-nextjs setup. Services restarted to load new environment variables. Ready for comprehensive testing to verify both frontend authentication and backend API deployment fixes work correctly."
 
   - task: "Critical Backend Infrastructure Deployment"
     implemented: true
