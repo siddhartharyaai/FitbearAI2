@@ -1,5 +1,5 @@
 const nextConfig = {
-  output: 'standalone',
+  // Remove 'output: standalone' for Netlify deployment - this is for Docker only
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -18,10 +18,6 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
-  },
-  experimental: {
-    // Remove if not using Server Components
-    serverComponentsExternalPackages: ['mongodb'],
   },
   webpack(config, { dev }) {
     if (dev) {
