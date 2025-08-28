@@ -5,20 +5,36 @@ import { createServerClient } from "@supabase/ssr";
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
+  
+  const cookieStore = cookies();
+  
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get: (name) => cookies().get(name)?.value,
-        set: (name, value, options) => cookies().set({ name, value, ...options }),
-        remove: (name, options) => cookies().set({ name, value: "", ...options }),
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          try {
+            cookiesToSet.forEach(({ name, value, options }) => 
+              cookieStore.set(name, value, options)
+            );
+          } catch {
+            // The `setAll` method was called from a Server Component.
+            // This can be ignored if you have middleware refreshing
+            // user sessions.
+          }
+        },
       },
     }
   );
+  
   if (code) {
     await supabase.auth.exchangeCodeForSession(code);
   }
+  
   return NextResponse.redirect(new URL("/", req.url));
 }
 
