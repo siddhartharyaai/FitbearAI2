@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = "out"
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20.15.1"
@@ -11,9 +11,3 @@
 [functions]
   node_bundler = "esbuild"
   external_node_modules = ["mongodb", "@google/generative-ai", "@deepgram/sdk"]
-
-# Redirect all API routes to serverless functions
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/___netlify-handler"
-  status = 200
