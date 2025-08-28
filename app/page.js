@@ -46,8 +46,8 @@ async function handleSignIn(email, password) {
 
 // Authenticated API calls with Bearer token
 async function authenticatedFetch(endpoint, options = {}) {
-  const supabase = supabaseBrowser();
-  const { data: sessionData } = await supabase.auth.getSession();
+  const supabaseClient = supabase;
+  const { data: sessionData } = await supabaseClient.auth.getSession();
   const token = sessionData?.session?.access_token;
 
   return fetch(endpoint, {
