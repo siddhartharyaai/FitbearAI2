@@ -709,8 +709,8 @@ export default function FitbearApp() {
             <Button
               variant="outline"
               onClick={async () => {
-                const supabase = supabaseBrowser();
-                await supabase.auth.signOut();
+                const supabaseClient = supabase;
+                await supabaseClient.auth.signOut();
                 setUser(null);
                 toast({
                   title: "Signed Out",
