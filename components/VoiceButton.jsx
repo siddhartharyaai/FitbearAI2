@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
-import { Button } from '../components/ui/button';
+import { Button } from './ui/button';
 import { useStt, useTts } from '@/lib/hooks/useVoice';
 import { usePostHog } from '@/lib/hooks/usePostHog';
 
