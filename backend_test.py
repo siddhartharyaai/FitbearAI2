@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-🚨 CRITICAL DEPLOYED APP VALIDATION - BACKEND INFRASTRUCTURE
-Testing https://fitbearai.netlify.app/api/* endpoints for production readiness
+🚨 COMPREHENSIVE BACKEND TESTING - POST-SUPABASE FIX
+Testing local environment with real Supabase credentials after critical fixes
 """
 
 import requests
@@ -10,9 +10,10 @@ import time
 import base64
 from io import BytesIO
 from PIL import Image
+import os
 
-# Production URL for deployed app as specified in review request
-BASE_URL = "https://fitbearai.netlify.app/api"
+# Use local environment with real Supabase credentials
+BASE_URL = "https://fitbear-ai.preview.emergentagent.com/api"
 
 def create_test_image():
     """Create a small test image for upload testing"""
