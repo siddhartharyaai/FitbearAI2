@@ -450,9 +450,21 @@ test_plan:
   test_all: true
   test_priority: "critical_first"
 
+  - task: "Netlify Deployed App - Profile Completion Error"
+    implemented: true
+    working: false
+    file: "/app/components/FullBPSOnboarding.jsx"
+    stuck_count: 1
+    priority: "critical"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "CRITICAL BUG FOUND IN DEPLOYED APP: User manually tested the deployed Netlify app (https://fitbearai.netlify.app) and encountered an error when clicking 'Complete Profile' button during profile completion/onboarding. Error screenshots provided. This is a production-blocking issue that needs immediate investigation and resolution."
+
 agent_communication:
   - agent: "main"
-    message: "🎯 INITIATING COMPREHENSIVE CRITICAL TESTING: User demands 100% reliability with zero tolerance for errors. Will test every possible aspect: Node.js version fix (20.15.1), TypeScript build fixes (ignoreBuildErrors), UI component type issues (Button/Card converted to .tsx), Supabase client placeholders, import path fixes, production guards, and complete E2E functionality. User wants absolute certainty the app will deploy and work flawlessly. Testing EVERYTHING."
+    message: "🚨 CRITICAL BUG DISCOVERED: User found error during manual testing of deployed Netlify app when completing profile. Screenshots provided showing the exact error. Need immediate comprehensive frontend testing of deployed app to reproduce, diagnose, and fix this critical issue. This is production-blocking."
   - agent: "testing"
     message: "Starting comprehensive backend testing for Fitbear AI. Will test all 4 main API endpoints with realistic Indian nutrition data."
   - agent: "testing"
