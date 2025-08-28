@@ -6,12 +6,22 @@ export async function requireUser(req: NextRequest) {
   const auth = req.headers.get('authorization');
   if (auth?.startsWith('Bearer ')) {
     const token = auth.slice('Bearer '.length);
+    
+    // Check if Supabase environment variables are available
+    const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseAnonKey) {
+      console.warn('Supabase environment variables not configured');
+      throw Object.assign(new Error('Authentication service not configured'), { status: 500 });
+    }
+    
     // Verify token via Supabase Auth API
-    const url = `${process.env.SUPABASE_URL}/auth/v1/user`;
+    const url = `${supabaseUrl}/auth/v1/user`;
     const res = await fetch(url, {
       headers: { 
         Authorization: `Bearer ${token}`, 
-        apikey: process.env.SUPABASE_ANON_KEY! 
+        apikey: supabaseAnonKey 
       }
     });
     if (res.ok) {
