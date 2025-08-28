@@ -10,12 +10,13 @@
 
 [functions]
   node_bundler = "esbuild"
-  external_node_modules = ["@google/generative-ai","@deepgram/sdk","mongodb","@supabase/supabase-js","@supabase/ssr","sharp","tesseract.js"]
+  external_node_modules = [
+    "@google/generative-ai",
+    "@deepgram/sdk", 
+    "mongodb",
+    "@supabase/supabase-js",
+    "@supabase/ssr",
+    "sharp",
+    "tesseract.js"
+  ]
   included_files = ["public/test-assets/**"]
-  timeout = 26
-  memory = 1024
-
-# Function-specific overrides (if supported by Netlify plan)
-[functions."next_api_*"]
-  timeout = 26
-  memory = 1024
