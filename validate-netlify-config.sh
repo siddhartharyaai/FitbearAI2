@@ -36,10 +36,14 @@ else
 fi
 
 # Check for valid Node version
-if grep -q 'NODE_VERSION.*=.*"[0-9][0-9]*\.[0-9][0-9]*\.[0-9]' "$CONFIG_FILE"; then
-    echo "✅ Valid Node version format"
+NODE_VERSION=$(grep NODE_VERSION "$CONFIG_FILE" | cut -d'"' -f2)
+if [[ "$NODE_VERSION" =~ ^(18|20|22)$ ]]; then
+    echo "✅ Valid Netlify Node version: $NODE_VERSION"
+elif [[ "$NODE_VERSION" =~ ^[0-9][0-9]*\.[0-9][0-9]*\.[0-9] ]]; then
+    echo "⚠️  Specific patch version detected: $NODE_VERSION (may not be supported)"
+    echo "   Recommend using major version only: 18, 20, or 22"
 else
-    echo "❌ Invalid Node version format"
+    echo "❌ Invalid Node version format: $NODE_VERSION"
     exit 1
 fi
 
