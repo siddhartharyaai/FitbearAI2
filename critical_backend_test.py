@@ -16,7 +16,7 @@ import subprocess
 
 # URLs for testing
 INTERNAL_URL = "http://localhost:3000"
-EXTERNAL_URL = "https://nutrition-buddy-18.preview.emergentagent.com"
+EXTERNAL_URL = "https://fitbear-revival.preview.emergentagent.com"
 
 print("🎯 CRITICAL COMPREHENSIVE BACKEND TESTING - ZERO TOLERANCE FOR ERRORS")
 print("="*80)

@@ -19,7 +19,7 @@ import time
 from datetime import datetime
 
 # Test configuration
-BASE_URL = os.getenv('NEXT_PUBLIC_BASE_URL', 'https://nutrition-buddy-18.preview.emergentagent.com')
+BASE_URL = os.getenv('NEXT_PUBLIC_BASE_URL', 'https://fitbear-revival.preview.emergentagent.com')
 API_BASE = f"{BASE_URL}/api"
 
 print(f"🎯 PROFILE COMPLETION FIX VERIFICATION")
