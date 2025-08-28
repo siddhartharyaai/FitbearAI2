@@ -167,11 +167,11 @@ else:
 # Test TDEE Calculator
 print("\nTesting TDEE Calculator...")
 tdee_data = {
+    "sex": "male",
     "age": 28,
-    "gender": "male",
-    "height": 175,
-    "weight": 70,
-    "activity": "moderate"
+    "height_cm": 175,
+    "weight_kg": 70,
+    "activity_level": "moderate"
 }
 tdee_result = test_endpoint('POST', '/tools/tdee', tdee_data)
 results["core_apis"]["tdee_calculator"] = tdee_result
