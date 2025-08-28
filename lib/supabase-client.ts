@@ -12,3 +12,6 @@ export const supabaseBrowser = () => {
     }
   });
 };
+
+// For direct imports - create instance
+export const supabase = supabaseBrowser();
