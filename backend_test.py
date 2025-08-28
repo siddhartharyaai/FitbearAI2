@@ -43,7 +43,7 @@ API_BASE = f"{LOCAL_URL}/api"
 print(f"🎯 FINAL VALIDATION - ALL SYSTEMS GO CHECK")
 print(f"Testing backend locally at: {API_BASE}")
 print(f"External URL: {EXTERNAL_URL}")
-print(f"Environment: {os.getenv('APP_MODE', 'unknown')}")
+print(f"Environment: {env_vars.get('APP_MODE', 'unknown')}")
 print("=" * 80)
 
 def test_endpoint(method, endpoint, data=None, files=None, headers=None):
