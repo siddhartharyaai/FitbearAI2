@@ -12,6 +12,10 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    // Ensure API routes are not statically analyzed
+    serverComponentsExternalPackages: ['mongodb']
+  },
   images: {
     unoptimized: true,
   },
