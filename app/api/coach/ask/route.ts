@@ -10,7 +10,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 export async function POST(req: Request) {
   try {
     // Require authentication for coach interactions
-    const user = await requireUser();
+    const user = await requireUser(req);
     
     const { message, user_id, profile, recent_logs } = await req.json();
     
