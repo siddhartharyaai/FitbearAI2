@@ -207,7 +207,7 @@ export default function App() {
   };
 
   // Handle profile completion with robust error handling
-  if (step === 'onboarding' || !profile) {
+  if (step === 'onboarding' && user) {
     return (
       <FullBPSOnboarding
         user={user}
