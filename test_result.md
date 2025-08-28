@@ -494,6 +494,8 @@ test_plan:
 agent_communication:
   - agent: "main"
     message: "🚨 CRITICAL BUG DISCOVERED: User found error during manual testing of deployed Netlify app when completing profile. Screenshots provided showing the exact error. Need immediate comprehensive frontend testing of deployed app to reproduce, diagnose, and fix this critical issue. This is production-blocking."
+  - agent: "main"
+    message: "🔧 NETLIFY DEPLOYMENT FIXES IMPLEMENTED: Fixed critical Netlify deployment issues: 1) Removed 'output: standalone' from next.config.js (Docker-only config that breaks Netlify), 2) Updated netlify.toml with proper Next.js 14 configuration using @netlify/plugin-nextjs, 3) User provided real Supabase credentials replacing placeholder URLs, 4) Restarted services to apply new environment variables. Ready for comprehensive backend testing to verify all API routes work before redeployment."
   - agent: "testing"
     message: "Starting comprehensive backend testing for Fitbear AI. Will test all 4 main API endpoints with realistic Indian nutrition data."
   - agent: "testing"
