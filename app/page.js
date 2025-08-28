@@ -132,7 +132,10 @@ export default function App() {
 
   // Load user profile and targets
   const loadUserData = async (currentUser) => {
-    if (!currentUser) return;
+    if (!currentUser) {
+      setStep('auth');
+      return;
+    }
 
     try {
       const supabase = supabaseBrowser();
@@ -140,7 +143,8 @@ export default function App() {
       const token = session?.access_token;
 
       if (!token) {
-        throw new Error('No authentication token');
+        setStep('auth');
+        return;
       }
 
       // Load profile
@@ -169,7 +173,7 @@ export default function App() {
       }
     } catch (error) {
       console.error('Load user data error:', error);
-      setStep('onboarding');
+      setStep('auth');
     }
   };
 
