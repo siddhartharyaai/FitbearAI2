@@ -18,7 +18,7 @@ import { useRouter } from 'next/navigation';
 
 // Email/Password Auth (NO OTP/Magic Link)
 async function handleSignUp(email, password) {
-  const supabase = supabaseBrowser();
+  const supabaseClient = supabase;
   const { data, error } = await supabase.auth.signUp({ 
     email, 
     password,
