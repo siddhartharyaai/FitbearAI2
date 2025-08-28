@@ -218,7 +218,7 @@ print("Testing production mode enforcement...")
 production_checks = {
     "app_mode": os.getenv('APP_MODE') == 'production',
     "allow_mocks": os.getenv('ALLOW_MOCKS') == 'false',
-    "supabase_real": 'rencenlauvvopjjynvebc' in os.getenv('SUPABASE_URL', ''),
+    "supabase_real": 'rencenlauvvopjjynvebc' in str(os.getenv('SUPABASE_URL', '')),
     "gemini_key_set": len(os.getenv('GEMINI_API_KEY', '')) > 30
 }
 
