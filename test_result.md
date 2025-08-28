@@ -468,16 +468,19 @@ test_plan:
         comment: "🚨 TOTAL BACKEND INFRASTRUCTURE FAILURE CONFIRMED: Comprehensive testing of deployed app backend at https://fitbearai.netlify.app/api/* reveals COMPLETE API INFRASTRUCTURE COLLAPSE. CRITICAL FINDINGS: 1) ALL 12 API endpoints return 404 Not Found with HTML responses instead of JSON, 2) No API routes are deployed to Netlify Functions - complete backend missing, 3) All endpoints (/whoami, /health/app, /me/profile, /tools/tdee, /menu/scan, /food/analyze, /coach/ask, /tts, /stt) non-functional, 4) HTML 404 pages indicate routing/deployment failure, not application code issues. ROOT CAUSE: Backend API routes not properly configured for Netlify Functions deployment. IMPACT: Even if frontend Supabase issue is fixed, backend APIs are completely inaccessible. URGENT ACTION REQUIRED: 1) Configure Netlify Functions for Next.js API routes, 2) Ensure /app/api/[[...path]]/route.js is deployed as serverless function, 3) Verify environment variables are configured on Netlify, 4) Test API deployment separately from frontend. This is a critical infrastructure deployment issue preventing all backend functionality."
 
   - task: "Critical Backend Infrastructure Deployment"
-    implemented: false
+    implemented: true
     working: false
     file: "/app/app/api/[[...path]]/route.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "critical"
     needs_retesting: true
     status_history:
       - working: false
         agent: "testing"
         comment: "🚨 BACKEND DEPLOYMENT FAILURE: Testing reveals NO backend API routes are deployed to Netlify. All /api/* endpoints return 404 HTML pages. The Next.js API routes in /app/api/[[...path]]/route.js are not being deployed as Netlify Functions. This requires immediate infrastructure configuration to deploy backend APIs as serverless functions on Netlify platform."
+      - working: false
+        agent: "main"
+        comment: "🔧 NETLIFY CONFIGURATION FIXES APPLIED: Fixed critical deployment issues: 1) Removed 'output: standalone' from next.config.js (Docker config incompatible with Netlify), 2) Updated netlify.toml with proper @netlify/plugin-nextjs configuration for Next.js 14, 3) Set correct publish directory to '.next', 4) Added external_node_modules for MongoDB/Gemini/Deepgram. Real Supabase credentials now configured by user. Ready for testing and redeployment."
 
   - task: "Complete Profile System Overhaul - Frontend Testing"
     implemented: true
