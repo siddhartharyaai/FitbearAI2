@@ -232,10 +232,10 @@ print("-" * 50)
 # Test Production Mode Enforcement
 print("Testing production mode enforcement...")
 production_checks = {
-    "app_mode": os.getenv('APP_MODE') == 'production',
-    "allow_mocks": os.getenv('ALLOW_MOCKS') == 'false',
-    "supabase_real": 'rencenlauvvopjjynvebc' in str(os.getenv('SUPABASE_URL', '')),
-    "gemini_key_set": len(os.getenv('GEMINI_API_KEY', '')) > 30
+    "app_mode": env_vars.get('APP_MODE') == 'production',
+    "allow_mocks": env_vars.get('ALLOW_MOCKS') == 'false',
+    "supabase_real": 'rencenlauvvopjjynvebc' in str(env_vars.get('SUPABASE_URL', '')),
+    "gemini_key_set": len(env_vars.get('GEMINI_API_KEY', '')) > 30
 }
 
 results["production_readiness"]["environment"] = production_checks
