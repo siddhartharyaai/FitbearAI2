@@ -6,17 +6,15 @@
 [build.environment]
   NODE_VERSION = "20.15.1"
 
-# Next.js Plugin (required for Next.js apps)
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Function settings for API routes
 [functions]
   node_bundler = "esbuild"
   external_node_modules = [
     "@google/generative-ai",
     "@deepgram/sdk",
-    "mongodb", 
+    "mongodb",
     "@supabase/supabase-js",
     "@supabase/ssr",
     "sharp",

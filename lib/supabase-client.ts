@@ -1,5 +1,6 @@
 // lib/supabase-client.ts
 import { createClient } from '@supabase/supabase-js';
+import { createServerClient } from '@supabase/ssr';
 
 export const supabaseBrowser = () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
@@ -14,5 +15,14 @@ export const supabaseBrowser = () => {
   });
 };
 
-// For direct imports - create instance
-export const supabase = supabaseBrowser();
+export const supabaseServer = () => {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || 'https://placeholder.supabase.co';
+  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || 'placeholder';
+  
+  return createServerClient(url, anon, {
+    cookies: {
+      get() { return undefined; },
+      set() { /* no-op */ },
+    }
+  });
+};
