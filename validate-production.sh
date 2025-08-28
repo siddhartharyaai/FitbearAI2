@@ -105,8 +105,8 @@ echo ""
 echo "🏗️  TESTING BUILD PROCESS..."
 
 # Test build
-echo "Running npm ci && npm run build..."
-if npm ci && npm run build > build.log 2>&1; then
+echo "Running yarn install && yarn build..."
+if yarn install --silent && yarn build > build.log 2>&1; then
     print_check "Build successful" 0
     rm -f build.log
 else
